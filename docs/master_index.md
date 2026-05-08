@@ -14,5 +14,7 @@ SUMMARY: Master index for the Remote PC Controller documentation directory.
 | [architecture.md](file:///d:/BasitAgent/master-protocol-ai-system/remote-pc-controller/docs/architecture.md) | System Design & Flow v2.0 | Approved |
 | [database-schema.md](file:///d:/BasitAgent/master-protocol-ai-system/remote-pc-controller/docs/database-schema.md) | DB Schema & DDL v2.1 | Validated |
 | [api-design.md](file:///d:/BasitAgent/master-protocol-ai-system/remote-pc-controller/docs/api-design.md) | REST & WebSocket Spec | Baseline |
-| [change-log.md](file:///d:/BasitAgent/master-protocol-ai-system/remote-pc-controller/docs/change-log.md) | Revision History | Active |
+| [mobile-interface.md](file:///d:/BasitAgent/master-protocol-ai-system/remote-pc-controller/docs/mobile-interface.md) | Mobile UI/UX Spec (Hybrid) | APPROVED ✅ |
+| [mobile-app-vision-report.md](file:///d:/BasitAgent/master-protocol-ai-system/remote-pc-controller/docs/mobile-app-vision-report.md) | Comprehensive App Vision Report | APPROVED ✅ |
+| [change-log.md](file:///d:/BasitAgent\master-protocol-ai-system\remote-pc-controller\docs\change-log.md) | Revision History | Active |
 | [discovery-01.md](file:///d:/BasitAgent/master-protocol-ai-system/remote-pc-controller/docs/meeting-notes/discovery-01.md) | Initial Interview Notes | Baselined |
