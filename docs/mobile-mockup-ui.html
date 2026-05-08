@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>PC Remote Controller - AI Dashboard Mockup</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+            background: #0A0E1A;
+            color: #FFFFFF;
+            padding: 16px;
+            min-height: 100vh;
+        }
+
+        /* Glassmorphism Effect */
+        .glass-card {
+            background: rgba(20, 28, 48, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 28px;
+            border: 1px solid rgba(0, 255, 255, 0.15);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 8px 4px;
+        }
+
+        .header h1 {
+            font-size: 22px;
+            font-weight: 600;
+            background: linear-gradient(135deg, #00FFFF, #7B2FBE);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .status-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0, 184, 148, 0.2);
+            padding: 6px 14px;
+            border-radius: 40px;
+            border: 1px solid rgba(0, 184, 148, 0.4);
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            background: #00B894;
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        /* ZONE 1: PC Health Stats */
+        .stats-row {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            flex: 1;
+            padding: 14px 8px;
+            text-align: center;
+            border-radius: 20px;
+            background: rgba(20, 28, 48, 0.6);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(0, 255, 255, 0.1);
+        }
+
+        .stat-value {
+            font-size: 20px;
+            font-weight: 700;
+            font-family: monospace;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: #8A8F9E;
+            margin-top: 4px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: #2A2E3F;
+            border-radius: 4px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .fill-cpu { background: #00B894; width: 42%; }
+        .fill-ram { background: #00CEC9; width: 58%; }
+        .fill-network { background: #7B2FBE; width: 65%; }
+
+        /* ZONE 2: Timer Card */
+        .timer-card {
+            padding: 28px 20px;
+            text-align: center;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, rgba(20, 28, 48, 0.8), rgba(10, 14, 26, 0.9));
+        }
+
+        .timer-status {
+            font-size: 14px;
+            color: #00B894;
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+        }
+
+        .timer {
+            font-size: 52px;
+            font-weight: 700;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 4px;
+            color: #00FFFF;
+            text-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+        }
+
+        .task-title {
+            font-size: 16px;
+            color: #A0A5B5;
+            margin-top: 12px;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 16px;
+            border: none;
+            border-radius: 40px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-start {
+            background: linear-gradient(135deg, #00B894, #00CEC9);
+            color: white;
+            box-shadow: 0 0 20px rgba(0, 184, 148, 0.3);
+        }
+
+        .btn-stop {
+            background: linear-gradient(135deg, #E94560, #FF6B6B);
+            color: white;
+            box-shadow: 0 0 20px rgba(233, 69, 96, 0.3);
+        }
+
+        .btn:active {
+            transform: scale(0.97);
+        }
+
+        /* ZONE 3: Dynamic Buttons Grid */
+        .section-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #8A8F9E;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .dynamic-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .dynamic-btn {
+            background: rgba(30, 40, 60, 0.8);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(0, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 14px 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .dynamic-btn:active {
+            transform: scale(0.95);
+            background: rgba(0, 184, 148, 0.2);
+            border-color: #00B894;
+        }
+
+        .dynamic-btn .emoji {
+            font-size: 28px;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .dynamic-btn .label {
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        /* Voice Orb */
+        .voice-orb {
+            background: linear-gradient(135deg, #7B2FBE, #00FFFF);
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 0 30px rgba(123, 47, 190, 0.5);
+        }
+
+        .voice-orb:active {
+            transform: scale(0.95);
+        }
+
+        .voice-orb .mic-icon {
+            font-size: 32px;
+        }
+
+        /* ZONE 4: AI Matrix Terminal */
+        .terminal-card {
+            padding: 16px;
+            margin-bottom: 20px;
+            height: 180px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+        }
+
+        .log-line {
+            padding: 5px 0;
+            border-bottom: 1px solid rgba(0, 255, 255, 0.05);
+            color: #00FF9D;
+        }
+
+        .log-line.ai-building {
+            color: #FFD93D;
+        }
+
+        .log-line.ai-complete {
+            color: #00B894;
+        }
+
+        /* Settings Section (Hidden by default, shown on tab) */
+        .settings-panel {
+            display: none;
+        }
+
+        .settings-panel.active {
+            display: block;
+        }
+
+        .settings-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid rgba(0, 255, 255, 0.1);
+        }
+
+        .settings-label {
+            font-size: 15px;
+        }
+
+        .settings-value {
+            font-size: 14px;
+            color: #00FFFF;
+        }
+
+        .toggle-switch {
+            width: 50px;
+            height: 26px;
+            background: #2A2E3F;
+            border-radius: 30px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .toggle-switch.active {
+            background: #00B894;
+        }
+
+        .toggle-knob {
+            width: 22px;
+            height: 22px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 2px;
+            left: 4px;
+            transition: left 0.2s;
+        }
+
+        .toggle-switch.active .toggle-knob {
+            left: 24px;
+        }
+
+        /* Tab Bar */
+        .tab-bar {
+            display: flex;
+            gap: 8px;
+            background: rgba(20, 28, 48, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 50px;
+            padding: 6px;
+            margin-top: 10px;
+        }
+
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 12px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, #00B894, #00CEC9);
+            color: white;
+        }
+
+        /* Main Content */
+        .main-content {
+            display: none;
+        }
+
+        .main-content.active {
+            display: block;
+        }
+
+        /* Input Field */
+        .url-input {
+            width: 100%;
+            padding: 14px 16px;
+            background: rgba(30, 40, 60, 0.8);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            border-radius: 40px;
+            color: white;
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+
+        .url-input::placeholder {
+            color: #5A5F75;
+        }
+
+        .skill-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            border-bottom: 1px solid rgba(0, 255, 255, 0.1);
+        }
+
+        .skill-name {
+            font-weight: 600;
+        }
+
+        .skill-status {
+            font-size: 11px;
+            color: #00B894;
+        }
+
+        .delete-skill {
+            color: #E94560;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🖥️ PC REMOTE</h1>
+            <div class="status-badge">
+                <div class="status-dot"></div>
+                <span>Online</span>
+            </div>
+        </div>
+
+        <!-- Tab Bar (Home / Settings) -->
+        <div class="tab-bar">
+            <div class="tab active" data-tab="home">🏠 HOME</div>
+            <div class="tab" data-tab="settings">⚙️ SETTINGS</div>
+            <div class="tab" data-tab="skills">🧠 SKILLS</div>
+        </div>
+
+        <!-- ==================== HOME TAB ==================== -->
+        <div id="home-tab" class="main-content active">
+            <!-- ZONE 1: PC Health Stats -->
+            <div class="stats-row">
+                <div class="stat-card">
+                    <div class="stat-value">42%</div>
+                    <div class="stat-label">CPU</div>
+                    <div class="progress-bar"><div class="progress-fill fill-cpu"></div></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">58%</div>
+                    <div class="stat-label">RAM (16GB)</div>
+                    <div class="progress-bar"><div class="progress-fill fill-ram"></div></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">24/8</div>
+                    <div class="stat-label">DL/UL Mbps</div>
+                    <div class="progress-bar"><div class="progress-fill fill-network"></div></div>
+                </div>
+            </div>
+
+            <!-- ZONE 2: Timer Card -->
+            <div class="timer-card glass-card">
+                <div class="timer-status">🟢 WORK IN PROGRESS</div>
+                <div class="timer">02:34:12</div>
+                <div class="task-title">📋 Coding - Project Alpha</div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button class="btn btn-start" id="startWorkBtn">▶ START WORK</button>
+                <button class="btn btn-stop" id="stopWorkBtn">⏹️ STOP WORK</button>
+            </div>
+
+            <!-- ZONE 3: Dynamic Buttons Grid -->
+            <div class="section-title">⚡ QUICK ACTIONS</div>
+            <div class="dynamic-grid" id="dynamicGrid">
+                <div class="dynamic-btn" onclick="sendCommand('slack')">
+                    <div class="emoji">💬</div>
+                    <div class="label">Slack</div>
+                </div>
+                <div class="dynamic-btn" onclick="sendCommand('gmail')">
+                    <div class="emoji">📧</div>
+                    <div class="label">Gmail</div>
+                </div>
+                <div class="dynamic-btn" onclick="sendCommand('chrome')">
+                    <div class="emoji">🌐</div>
+                    <div class="label">Chrome</div>
+                </div>
+                <div class="dynamic-btn" onclick="sendCommand('spotify')">
+                    <div class="emoji">🎵</div>
+                    <div class="label">Spotify</div>
+                </div>
+                <div class="dynamic-btn" onclick="sendCommand('vscode')">
+                    <div class="emoji">💻</div>
+                    <div class="label">VS Code</div>
+                </div>
+                <div class="dynamic-btn" onclick="sendCommand('zoom')">
+                    <div class="emoji">🎥</div>
+                    <div class="label">Zoom</div>
+                </div>
+                <div class="dynamic-btn" onclick="sendCommand('whatsapp')">
+                    <div class="emoji">💬</div>
+                    <div class="label">WhatsApp</div>
+                </div>
+                <div class="dynamic-btn" onclick="sendCommand('telegram')">
+                    <div class="emoji">📱</div>
+                    <div class="label">Telegram</div>
+                </div>
+            </div>
+
+            <!-- Custom URL Input -->
+            <input type="text" class="url-input" id="customUrl" placeholder="🔗 Custom URL (e.g., https://youtube.com)">
+
+            <!-- Voice Orb -->
+            <div class="voice-orb" id="voiceOrb">
+                <div class="mic-icon">🎤</div>
+            </div>
+
+            <!-- ZONE 4: AI Matrix Terminal -->
+            <div class="terminal-card glass-card" id="terminalLogs">
+                <div class="log-line">> Initializing connection... OK</div>
+                <div class="log-line">> Connected to DESKTOP-PC-V3</div>
+                <div class="log-line">> Fetching system stats... OK</div>
+                <div class="log-line ai-building">> [AI] Building Skill: System Optimization... (48%)</div>
+                <div class="log-line ai-building">> [AI] Learning User Routine... (62%)</div>
+            </div>
+        </div>
+
+        <!-- ==================== SETTINGS TAB ==================== -->
+        <div id="settings-tab" class="main-content settings-panel">
+            <div class="timer-card glass-card" style="margin-top: 20px;">
+                <div class="section-title" style="text-align: center;">⚙️ PREFERENCES</div>
+            </div>
+
+            <div class="settings-row">
+                <span class="settings-label">🔌 PC IP Address</span>
+                <input type="text" class="url-input" style="width: 150px; margin: 0;" value="192.168.1.100">
+            </div>
+
+            <div class="settings-row">
+                <span class="settings-label">🔑 API Key</span>
+                <input type="password" class="url-input" style="width: 180px; margin: 0;" value="••••••••••••••••">
+            </div>
+
+            <div class="settings-row">
+                <span class="settings-label">🤖 Auto-Build (AI Skills)</span>
+                <div class="toggle-switch active" id="autoBuildToggle">
+                    <div class="toggle-knob"></div>
+                </div>
+            </div>
+
+            <div class="settings-row">
+                <span class="settings-label">🎤 Voice Recognition</span>
+                <div class="toggle-switch active" id="voiceToggle">
+                    <div class="toggle-knob"></div>
+                </div>
+            </div>
+
+            <div class="settings-row">
+                <span class="settings-label">📳 Haptic Feedback</span>
+                <div class="toggle-switch active" id="hapticToggle">
+                    <div class="toggle-knob"></div>
+                </div>
+            </div>
+
+            <div class="settings-row">
+                <span class="settings-label">🌙 Dark Mode</span>
+                <div class="toggle-switch active" id="darkModeToggle">
+                    <div class="toggle-knob"></div>
+                </div>
+            </div>
+
+            <div class="settings-row">
+                <span class="settings-label">ℹ️ App Version</span>
+                <span class="settings-value">v2.0.0 - AI Agentic</span>
+            </div>
+
+            <div class="settings-row">
+                <span class="settings-label">💾 Last Backup</span>
+                <span class="settings-value">2026-05-08 10:30 AM</span>
+            </div>
+
+            <button class="btn btn-start" style="width: 100%; margin-top: 20px;" onclick="alert('Settings Saved')">💾 SAVE SETTINGS</button>
+            <button class="btn btn-stop" style="width: 100%; margin-top: 12px;" onclick="alert('Test Connection')">🔌 TEST CONNECTION</button>
+        </div>
+
+        <!-- ==================== SKILLS TAB ==================== -->
+        <div id="skills-tab" class="main-content settings-panel">
+            <div class="timer-card glass-card" style="margin-top: 20px;">
+                <div class="section-title" style="text-align: center;">🧠 AI-GENERATED SKILLS</div>
+                <div class="task-title" style="text-align: center;">Skills that AI built automatically</div>
+            </div>
+
+            <div class="skill-item">
+                <div>
+                    <div class="skill-name">🎬 "youtube search"</div>
+                    <div class="skill-status">Status: Active | Version: 2 | Used: 15x</div>
+                </div>
+                <div class="delete-skill" onclick="alert('Delete skill?')">🗑️</div>
+            </div>
+
+            <div class="skill-item">
+                <div>
+                    <div class="skill-name">🐍 "python run script"</div>
+                    <div class="skill-status">Status: Active | Version: 1 | Used: 8x</div>
+                </div>
+                <div class="delete-skill" onclick="alert('Delete skill?')">🗑️</div>
+            </div>
+
+            <div class="skill-item">
+                <div>
+                    <div class="skill-name">📊 "system optimize"</div>
+                    <div class="skill-status">Status: Building... (48%) | AI Learning</div>
+                </div>
+                <div class="delete-skill" style="opacity: 0.5;">⏳</div>
+            </div>
+
+            <div class="skill-item">
+                <div>
+                    <div class="skill-name">🎮 "open games folder"</div>
+                    <div class="skill-status">Status: Active | Version: 1 | Used: 3x</div>
+                </div>
+                <div class="delete-skill" onclick="alert('Delete skill?')">🗑️</div>
+            </div>
+
+            <button class="btn btn-start" style="width: 100%; margin-top: 20px;" onclick="alert('Export Skills')">📤 EXPORT SKILLS (CSV)</button>
+        </div>
+    </div>
+
+    <script>
+        // Tab Switching
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabName = tab.dataset.tab;
+                
+                // Update active tab style
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                // Hide all main content
+                document.querySelectorAll('.main-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                
+                // Show selected content
+                document.getElementById(`${tabName}-tab`).classList.add('active');
+            });
+        });
+
+        // Toggle switches
+        function initToggle(toggleId) {
+            const toggle = document.getElementById(toggleId);
+            if (toggle) {
+                toggle.addEventListener('click', () => {
+                    toggle.classList.toggle('active');
+                });
+            }
+        }
+
+        initToggle('autoBuildToggle');
+        initToggle('voiceToggle');
+        initToggle('hapticToggle');
+        initToggle('darkModeToggle');
+
+        // Command functions
+        function sendCommand(command) {
+            const terminal = document.getElementById('terminalLogs');
+            const logLine = document.createElement('div');
+            logLine.className = 'log-line';
+            logLine.innerHTML = `> Executing command: "${command}"... OK`;
+            terminal.appendChild(logLine);
+            terminal.scrollTop = terminal.scrollHeight;
+            
+            // Add AI effect
+            setTimeout(() => {
+                const aiLog = document.createElement('div');
+                aiLog.className = 'log-line ai-building';
+                aiLog.innerHTML = `> [AI] Processing response for "${command}"...`;
+                terminal.appendChild(aiLog);
+                terminal.scrollTop = terminal.scrollHeight;
+            }, 800);
+            
+            // Haptic feedback effect
+            if (document.getElementById('hapticToggle').classList.contains('active')) {
+                // Simulate haptic (vibration for 50ms)
+                if (navigator.vibrate) navigator.vibrate(50);
+            }
+        }
+
+        // Voice Orb
+        document.getElementById('voiceOrb')?.addEventListener('click', () => {
+            const terminal = document.getElementById('terminalLogs');
+            const logLine = document.createElement('div');
+            logLine.className = 'log-line ai-building';
+            logLine.innerHTML = `> 🎤 Listening for voice command... Speak now`;
+            terminal.appendChild(logLine);
+            terminal.scrollTop = terminal.scrollHeight;
+            
+            // Simulate voice recognition
+            setTimeout(() => {
+                const result = document.createElement('div');
+                result.className = 'log-line';
+                result.innerHTML = `> Recognized: "Open Chrome and search for AI news"`;
+                terminal.appendChild(result);
+                terminal.scrollTop = terminal.scrollHeight;
+                
+                setTimeout(() => {
+                    const aiResult = document.createElement('div');
+                    aiResult.className = 'log-line ai-complete';
+                    aiResult.innerHTML = `> ✅ Executed: Chrome opened, searching "AI news"`;
+                    terminal.appendChild(aiResult);
+                    terminal.scrollTop = terminal.scrollHeight;
+                }, 1500);
+            }, 2000);
+        });
+
+        // Start/Stop buttons
+        document.getElementById('startWorkBtn')?.addEventListener('click', () => {
+            const timer = document.querySelector('.timer');
+            const status = document.querySelector('.timer-status');
+            status.innerHTML = '🟢 WORKING';
+            status.style.color = '#00B894';
+            // Simulate timer start (demo only)
+            alert('⏰ Timer Started!');
+        });
+
+        document.getElementById('stopWorkBtn')?.addEventListener('click', () => {
+            const status = document.querySelector('.timer-status');
+            status.innerHTML = '⚪ STOPPED';
+            status.style.color = '#8A8F9E';
+            alert('⏹️ Timer Stopped! Duration saved.');
+        });
+
+        // Custom URL
+        document.querySelector('.url-input')?.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const url = e.target.value;
+                if (url) {
+                    sendCommand(`open ${url}`);
+                    e.target.value = '';
+                }
+            }
+        });
+
+        // Update stats dynamically (simulate real-time)
+        setInterval(() => {
+            // Randomize CPU percentage between 20-80
+            const cpuValue = Math.floor(Math.random() * 60) + 20;
+            document.querySelectorAll('.stat-value')[0].innerText = `${cpuValue}%`;
+            document.querySelectorAll('.progress-fill')[0].style.width = `${cpuValue}%`;
+            
+            // Randomize RAM
+            const ramValue = Math.floor(Math.random() * 40) + 40;
+            document.querySelectorAll('.stat-value')[1].innerText = `${ramValue}%`;
+            document.querySelectorAll('.progress-fill')[1].style.width = `${ramValue}%`;
+            
+            // Randomize Network
+            const dl = Math.floor(Math.random() * 40) + 10;
+            const ul = Math.floor(Math.random() * 20) + 5;
+            document.querySelectorAll('.stat-value')[2].innerText = `${dl}/${ul}`;
+        }, 5000);
+    </script>
+</body>
+</html>

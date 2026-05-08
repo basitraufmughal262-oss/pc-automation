@@ -16,5 +16,6 @@ SUMMARY: Master index for the Remote PC Controller documentation directory.
 | [api-design.md](file:///d:/BasitAgent/master-protocol-ai-system/remote-pc-controller/docs/api-design.md) | REST & WebSocket Spec | Baseline |
 | [mobile-interface.md](file:///d:/BasitAgent/master-protocol-ai-system/remote-pc-controller/docs/mobile-interface.md) | Mobile UI/UX Spec (Hybrid) | APPROVED ✅ |
 | [mobile-app-vision-report.md](file:///d:/BasitAgent/master-protocol-ai-system/remote-pc-controller/docs/mobile-app-vision-report.md) | Comprehensive App Vision Report | APPROVED ✅ |
+| [mobile-mockup-ui.html](file:///d:/BasitAgent/master-protocol-ai-system/remote-pc-controller/docs/mobile-mockup-ui.html) | Interactive HTML UI Mockup | APPROVED ✅ |
 | [change-log.md](file:///d:/BasitAgent\master-protocol-ai-system\remote-pc-controller\docs\change-log.md) | Revision History | Active |
 | [discovery-01.md](file:///d:/BasitAgent/master-protocol-ai-system/remote-pc-controller/docs/meeting-notes/discovery-01.md) | Initial Interview Notes | Baselined |
